@@ -10,6 +10,12 @@
   "requirements": [
     "requests>=2.31.0",
     "beautifulsoup4>=4.12.2"
-  ],  
-  "version": "1.0.0"
+  ],
+  "resources": [
+    {
+      "type": "module",
+      "url": "/local/motivational-quote-card.js"
+    }
+  ],
+  "version": "1.0.1"
 }

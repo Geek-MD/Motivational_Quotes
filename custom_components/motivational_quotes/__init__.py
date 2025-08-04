@@ -1,6 +1,5 @@
 """The Motivational Quotes integration."""
 
-import asyncio
 import logging
 from datetime import time
 
@@ -15,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the Motivational Quotes integration (YAML-based, unused)."""
+    """Set up the Motivational Quotes integration (YAML not supported)."""
     return True
 
 
@@ -23,23 +22,33 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Motivational Quotes from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
-    # Carga plataformas (sensor)
+    # Forward sensor platform
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    # Obtener hora configurada
+    # Get update time (default to "08:00")
     update_time_str = entry.data.get(CONF_UPDATE_TIME, "08:00")
-    hour, minute = map(int, update_time_str.split(":"))
+    time_parts = update_time_str.split(":")
+    try:
+        hour = int(time_parts[0])
+        minute = int(time_parts[1])
+    except (ValueError, IndexError):
+        _LOGGER.warning("Invalid time format '%s', defaulting to 08:00", update_time_str)
+        hour, minute = 8, 0
 
     async def update_quotes(_now):
         """Trigger an update for the sensor platform."""
         _LOGGER.debug("Scheduled update of motivational quote at %02d:%02d", hour, minute)
         coordinator = hass.data[DOMAIN].get("coordinator")
         if coordinator:
-            await coordinator.async_update_data()
+            await coordinator.async_update()
 
-    # Programar la actualización diaria
+    # Schedule daily update
     async_track_time_change(
-        hass, update_quotes, hour=hour, minute=minute, second=0
+        hass,
+        update_quotes,
+        hour=hour,
+        minute=minute,
+        second=0,
     )
 
     return True

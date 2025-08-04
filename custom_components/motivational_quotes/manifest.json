@@ -14,7 +14,7 @@
   "resources": [
     {
       "type": "module",
-      "url": "/local/motivational-quote-card.js"
+      "url": "/customcards/motivational_quotes/motivational-quote-card.js"
     }
   ],
   "version": "1.0.1"

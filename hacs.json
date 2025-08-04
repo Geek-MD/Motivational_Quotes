@@ -1,0 +1,10 @@
+{
+  "name": "Motivational Quotes",
+  "content_in_root": false,
+  "domains": ["sensor"],
+  "country": "global",
+  "homeassistant": "2024.6.0",
+  "iot_class": "local_polling",
+  "render_readme": true,
+  "filename": "custom_components/motivational_quotes/manifest.json"
+}
